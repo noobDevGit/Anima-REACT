@@ -1,24 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import { GlobalStyle } from "./GlobalStyle";
+import { useState,useEffect } from 'react';
+import Header from "./Components/Header";
+import FirstSection from "./Components/FirstSection";
 
 function App() {
+
+  //featured Anime data Container 
+  const [featuredAnime,setFeaturedAnime]=useState([])
+
+  //Filled featuredAnime array with data from API
+  useEffect(()=>{
+
+    const getData = async () =>{
+
+
+      const data = await FetchFeaturedAnime()
+
+      setFeaturedAnime(data)
+
+
+    }
+
+    getData()
+
+
+  },[])
+
+
+  //Fetch Data from API
+  const FetchFeaturedAnime = async () =>{
+
+    const result = await fetch('https://api.jikan.moe/v3/anime/48926');
+
+    const data = await result.json();
+
+    return data
+
+
+  }
+
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <GlobalStyle/>
+    <Header/>
+   < FirstSection FeaturedAnime = {featuredAnime}/>  
+   </>
   );
 }
 
