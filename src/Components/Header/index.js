@@ -19,6 +19,8 @@ export const Header = () => {
                 <Ul>
                     <Li>Anime</Li>
                     <Li>Manga</Li>
+                    <Li>Movie</Li>
+
                 </Ul>
                <SearchBar>
                    <CustomInput type='text' placeholder='Search'/>
