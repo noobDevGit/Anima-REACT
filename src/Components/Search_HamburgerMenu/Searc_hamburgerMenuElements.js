@@ -46,3 +46,11 @@ text-decoration: none;
     }
 
 `
+
+export const SearchBarContainer = styled.div`
+
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+
+`
