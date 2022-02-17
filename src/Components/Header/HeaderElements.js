@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Pic from '../../logo/search.png'
 import {FiMenu, FiSearch} from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 export const Nav = styled.nav`
 width: 100%;
@@ -40,7 +41,7 @@ flex-direction: row;
 width: 150px;
 justify-content: space-evenly;
 
-@media screen and (max-width: 376px){
+@media screen and (max-width: 880px){
 
 display: none;
 
@@ -70,7 +71,7 @@ export const SearchBar = styled.form`
 margin-right:40px;
 border-radius: 5px;
 
-@media screen and (max-width: 376px){
+@media screen and (max-width: 880px){
 
 display: none;
 
@@ -107,7 +108,7 @@ export const PhoneMenuContainer = styled.div`
     display: none;
     height: 100%;
 
-    @media screen and (max-width: 376px){
+    @media screen and (max-width: 880px){
 
     display: flex;
     justify-content: space-evenly;
@@ -131,5 +132,106 @@ export const MenuSearch = styled(FiSearch)`
 width: 30px;
 height: 30%;
 color: white;
+
+`
+
+export const NewLi = styled(Link)`
+
+text-decoration: none;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
+
+`
+
+export const SearchResultContainer = styled.div`
+
+    width: 350px;
+    height: auto;
+    position: absolute;
+    background-color: beige;
+    right: 0px;
+    top: 70px;
+    display: ${props => props.Display > 0?'block':'none'}; ;
+    z-index: 2;
+    
+
+`
+
+export const WarningText = styled.p`
+
+    width: 100%;
+    height: auto;
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    background-color: blue;
+    display: ${props => props.Display < 3?'block':'none'}; ;
+
+
+`
+
+export const SearchDetailCard = styled.div`
+
+    display: flex;
+    width: 100%;
+    height: 100px;
+    background-color: cadetblue;
+    padding: 4px;
+
+`
+
+export const ImgContainer = styled.div`
+
+width: 24%;
+height: 100%;
+background-color: coral;
+
+`
+
+export const SearchCardLeftDetail = styled.div`
+width: 76%;
+height: 100%;
+background-color: cornflowerblue;
+display: flex;
+flex-direction: column;
+padding: 5px;
+
+`
+
+export const MainText = styled.p`
+
+
+font-family: ${props => props.isTitle?'Fredoka One, cursive':'Open Sans, sans-serif'}; 
+font-size: 11px;
+display: inline;
+
+`
+
+export const TextWrapperDiv = styled.div`
+
+width: 100%;
+height: auto;
+flex-direction: row;
+
+`
+
+export const ImgHolder = styled.img`
+
+    height: 100%;
+    width: 100%;
+
+
+
+
+`
+
+
+export const SearchCardContainer = styled.div`
+
+    height: auto;
+    width: 100%;
+    display: ${props => props.Display < 3?'none':'flex'}; 
+    flex-direction: column;
 
 `
