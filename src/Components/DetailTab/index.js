@@ -30,7 +30,7 @@ import { Container,
     import axios from 'axios'
 
 
-    const DetailTab = ({AnimeId}) => {
+    const DetailTab = ({AnimeId, IsAnime}) => {
 
     
      // Anime data Container 
@@ -45,11 +45,22 @@ import { Container,
 
     const getData = async () =>{
 
+        if (IsAnime) {
 
         const result = await axios (`https://api.jikan.moe/v3/anime/${AnimeId}`)
         
         setAnimeDetail(result.data)
         setIsloading(false)
+            
+        }else{
+
+            const result = await axios (`https://api.jikan.moe/v3/manga/${AnimeId}`)
+        
+            setAnimeDetail(result.data)
+            setIsloading(false)
+            
+        }
+        
 
     }
 
@@ -103,22 +114,55 @@ import { Container,
 
                     <FlexBottom>
                         <EditP>
-                            {AnimeDetail.premiered}
+                            {IsAnime?
+                                AnimeDetail.premiered
+                                :
+                                AnimeDetail.type
+                            }      
                         </EditP>
 
                         <EditP>
-                            {AnimeDetail.type}
+                            
+                            {IsAnime?
+                                AnimeDetail.type
+                                :
+                                AnimeDetail.serializations.map((content,index,arr)=>(
+
+                                    arr.length - 1 === index?
+                                    <> {content.name}</>
+                                    :
+                                    <> {content.name}, </>
+        
+                                ))
+                             }      
                         </EditP>
 
                         <EditP>
-                            {AnimeDetail.studios.map((content,index,arr)=>(
 
-                            arr.length - 1 === index?
-                            <> {content.name}</>
-                            :
-                            <> {content.name}, </>
+                             {IsAnime ?
 
-)                              )}
+                                AnimeDetail.studios.map((content,index,arr)=>(
+
+                                    arr.length - 1 === index?
+                                    <> {content.name}</>
+                                    :
+                                    <> {content.name}, </>
+
+                                ))
+                                :
+                                AnimeDetail.authors.map((content,index,arr)=>(
+
+                                    arr.length - 1 === index?
+                                    <> {content.name}</>
+                                    :
+                                    <> {content.name}, </>
+
+                                ))
+
+                             
+                            }
+
+                         
                         </EditP>
                     </FlexBottom>
 
@@ -164,7 +208,7 @@ import { Container,
                            <>
                            <ContentTitleContainer>
                                 <ContentTitlePar>
-                                Related Anime
+                                {IsAnime?'Related Anime':'Related Manga'}
                                 </ContentTitlePar>
                 
                                 <EditP>
@@ -282,10 +326,11 @@ import { Container,
                               
                             
                             </>}
+                            
                       
             <ContentTitleContainer>
                 <ContentTitlePar>
-                    Characters & Voice Actors
+                  {IsAnime?'Characters & Voice Actors':'Characters'}  
                 </ContentTitlePar>
                 
                 <EditP>
@@ -293,11 +338,13 @@ import { Container,
                 </EditP>
             </ContentTitleContainer>
            <Va_StaffContainer Height={'375px'}>
-                       <Va_Character_Staff IDAnim={AnimeId} isStaff = {false}/>
+                       <Va_Character_Staff IDAnim={AnimeId} isStaff = {false} IsAnime={IsAnime}/>
            </Va_StaffContainer>
             
 
-           <ContentTitleContainer>
+            {IsAnime?
+            <>
+            <ContentTitleContainer>
                 <ContentTitlePar>
                     Staff
                 </ContentTitlePar>
@@ -306,35 +353,43 @@ import { Container,
                     Edit
                 </EditP>
             </ContentTitleContainer>
-           <Va_StaffContainer Height={'150px'}>
-                       <Va_Character_Staff IDAnim={AnimeId} isStaff = {true}/>
-           </Va_StaffContainer>
+            <Va_StaffContainer Height={'150px'}>
+                <Va_Character_Staff IDAnim={AnimeId} isStaff = {true} IsAnime={IsAnime}/>
+            </Va_StaffContainer>
+            </>
+            :
+            <></>
+            }
+           
+            {IsAnime?
+                <ThemeContainer>
+                <ThemeHalfContainer>
+                    <ThemeContent isTitle = {true} Height = {'30px'}>
+                        Opening Theme
+                     </ThemeContent>
 
-           <ThemeContainer>
-                            <ThemeHalfContainer>
-                                <ThemeContent isTitle = {true} Height = {'30px'}>
-                                    Opening Theme
-                                 </ThemeContent>
+                     {AnimeDetail.opening_themes.map((content)=>(
+                        <ThemeContent isTitle = {false} Height = {'40px'}>
+                         <PlayIcon /> {content}
+                        </ThemeContent>
+                     ))}     
+                </ThemeHalfContainer>
 
-                                 {AnimeDetail.opening_themes.map((content)=>(
-                                    <ThemeContent isTitle = {false} Height = {'40px'}>
-                                     <PlayIcon /> {content}
-                                    </ThemeContent>
-                                 ))}     
-                            </ThemeHalfContainer>
-
-                            <ThemeHalfContainer>
-                                <ThemeContent isTitle = {true} Height = {'30px'}>
-                                Ending Theme
-                                </ThemeContent>
-                                {AnimeDetail.ending_themes.map((content)=>(
-                                    <ThemeContent isTitle = {false} Height = {'40px'}>
-                                     <PlayIcon /> {content}
-                                    </ThemeContent>
-                                 ))} 
-                            </ThemeHalfContainer>
-
-           </ThemeContainer>
+                <ThemeHalfContainer>
+                    <ThemeContent isTitle = {true} Height = {'30px'}>
+                    Ending Theme
+                    </ThemeContent>
+                    {AnimeDetail.ending_themes.map((content)=>(
+                        <ThemeContent isTitle = {false} Height = {'40px'}>
+                         <PlayIcon /> {content}
+                        </ThemeContent>
+                     ))} 
+                </ThemeHalfContainer>
+            </ThemeContainer>
+            :
+            <></>
+            }
+           
 
            <ContentTitleContainer>
                 <ContentTitlePar>
@@ -346,7 +401,7 @@ import { Container,
                 </EditP>
             </ContentTitleContainer>
            <ReviewContainer>
-                      <ReviewCard AnimeID={AnimeId}/>              
+                      <ReviewCard AnimeID={AnimeId} IsAnime={IsAnime}/>              
            </ReviewContainer>
 
         </Container>

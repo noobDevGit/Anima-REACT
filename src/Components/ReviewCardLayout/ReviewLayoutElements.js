@@ -40,6 +40,7 @@ width: 100%;
 height: 75px;
 display: flex;
 flex-direction: row;
+border-bottom: 1px solid  #20AFA1;
 
 `
 
@@ -49,6 +50,9 @@ export const TopContent = styled.div`
  height: 100%;
  padding: 2px;
  display: flex;
+ border-top: 1px solid  white;
+ background-color: black;
+ color: white;
  flex-direction: ${props => props.reverse?'row-reverse':`row`};
 
 
@@ -64,7 +68,7 @@ export const ImgHolder = styled.img`
 export const DetailContent = styled.div`
     width: 100%;
     height: auto;
-    background-color: hotpink;
+
     display: flex;
     flex-direction: column;
     padding: 0 8px;

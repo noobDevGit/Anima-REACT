@@ -15,7 +15,6 @@ export const Container = styled.div`
   display: block;
   width: 94%;
   height: auto;
-  background-color: antiquewhite;
   overflow: hidden;
 
   @media screen and (max-width: 376px){
@@ -29,12 +28,12 @@ export const Title = styled.div`
 
     height: 40px;
     width: 100%;
-    background-color: red;
     display: flex;
     color: white;
     align-items: center;
     font-family: 'Fredoka One', cursive;
     font-size: 18px;
+    border-top: 1px solid #20AFA1;
 
     @media screen and (max-width: 376px){
   
@@ -48,9 +47,8 @@ export const Title = styled.div`
 export const MainContentWrapper = styled.div`
     width: 100%;
     height: 100%;
-    background-color: violet;
     display: flex;
-
+    border: 1px solid #20AFA1;
 
     @media screen and (max-width: 945px){
   
@@ -64,7 +62,6 @@ export const LeftContent = styled.div`
 
     width: 30%;
     height: 100%;
-    background-color: turquoise;
     padding: 5px;
     
     
@@ -88,9 +85,10 @@ export const AlternativeTitles_title = styled.p`
 
       width  :100% ;
       height: 20px;
-      background-color: thistle;
+      background-color: #20AFA1;
       font-family: 'Fredoka One', cursive;
       font-size: 14px;
+      color: white;
 
 
 `
@@ -99,9 +97,10 @@ export const AlternativeTitles_Container = styled.div`
 
     width: 100%;
     height: auto;
-    background-color: white;
+    background-color: ${props => props.BgClr};
     padding-top: 8px;
     padding-bottom: 16px;
+    
     
 
 
@@ -114,6 +113,7 @@ export const AlternativeTitles_content = styled.p`
     font-size: 12px;
     font-style: normal;
     margin-bottom: 10px;
+    
 
 `
 
@@ -123,18 +123,18 @@ export const RightContent =styled.div`
 
     width: 70%;
     height: 100%;
-    background-color: tomato;
     padding: 5px;
+    border-left: 1px solid #20AFA1;
 `
 
 export const DetailNav = styled.div`
 
     width: 100%;
     height: 30px;
-    background-color: burlywood;
     display: flex;
     flex-direction: row;
     align-items: center;
+    border-bottom: 1px solid #20AFA1;
     
 
 `
@@ -144,13 +144,14 @@ export const DetailNavLinks = styled.p`
     font-family: 'Fredoka One', cursive;
     font-size: 12px;
     font-style: normal;
-    background-color: cadetblue;
+    background-color: #20AFA1;
     margin-right: 10px;
     height: 25px;
     display: flex;
     align-items: center;
     padding: 0 5px;
     width: auto;
+    color: white;
     `
 
 
@@ -158,7 +159,7 @@ export const RouteNav = styled.div`
 
     width: 100%;
     height: 40px;
-    background-color: khaki;
+    color: white;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -201,10 +202,11 @@ export const MobileTopContent = styled.div`
 @media screen and (max-width: 945px){
   width: 60%;
   height: 100%;
-  background-color: navy;
+  background-color: #20AFA1;
   display:flex ;
   flex-direction: column;
   padding: 8px;
+  color: white;
 }
 
 `
@@ -238,7 +240,7 @@ margin: 2px 5px;
 export const TextContainer = styled.div`
 
     width: 100%;
-    background-color: olive;
+    
     display: flex;
     flex-direction: row;
     align-items: ${props => props.FlexDir==='row'?'center':'strecth'};
@@ -265,10 +267,10 @@ export const MobileRootContainer = styled.div`
 @media screen and (max-width: 945px){
   width: 100%;
   height: auto;
-  background-color: cornflowerblue;
+  color: white;
   display:flex ;
   flex-direction: column;
-  padding: 10px;
+ 
   
 }
 

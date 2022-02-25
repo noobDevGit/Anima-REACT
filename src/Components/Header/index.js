@@ -16,20 +16,28 @@ import { Nav,
     MainText,
     TextWrapperDiv,
     ImgContainer,
-    SearchCardContainer} from "./HeaderElements"
+    SearchCardContainer,
+    TypeP} from "./HeaderElements"
 import logo  from "../../logo/logo.png"
 
 import axios from 'axios'
 
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 
 
-export const Header = ({ToggleFunc}) => {
+
+export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}) => {
+
+
+    const myContainer = useRef(null);
 
     const [InputLength,SetInputLength]= useState(0)
 
     // Anime data Container 
     const [AnimeDetail,setAnimeDetail]=useState({})
+
+    // Manga data Container 
+    const [MangaDetail,setMangaDetail]=useState({})
 
     const [isLoading,setIsloading]=useState(true);
 
@@ -60,8 +68,12 @@ export const Header = ({ToggleFunc}) => {
             const fetch = async ()=>{
         
               const result = await axios (`https://api.jikan.moe/v3/search/anime?q=${searchQuery}&page=1&limit=5`)
+
+              const Mangaresult = await axios (`https://api.jikan.moe/v3/search/manga?q=${searchQuery}&page=1&limit=5`)
         
               setAnimeDetail(result.data)
+
+              setMangaDetail(Mangaresult.data)
 
               setIsloading(false)
         
@@ -71,6 +83,33 @@ export const Header = ({ToggleFunc}) => {
         
         
           },[searchQuery])
+
+          useEffect(()=>{
+
+            if (MobileQuery.length >= 3) {
+
+                const fetch = async ()=>{
+        
+                    const result = await axios (`https://api.jikan.moe/v3/search/anime?q=${MobileQuery}&page=1&limit=5`)
+
+                    const Mangaresult = await axios (`https://api.jikan.moe/v3/search/manga?q=${MobileQuery}&page=1&limit=5`)
+              
+                    setAnimeDetail(result.data)
+
+                    setMangaDetail(Mangaresult.data)
+      
+                    setIsloading(false)
+              
+                  }
+              
+                  fetch()
+                
+            }
+
+         
+        
+        
+          },[MobileQuery])
 
 
      
@@ -188,68 +227,135 @@ export const Header = ({ToggleFunc}) => {
         ToggleFunc(true)
       }
 
+      const OpenSearch =()=>{
+
+        ToggleSearchBar(!SendSearchIsOpen)
+
+      }
+
+      const DefaultValue = ()=>{
+       
+        SetInputLength('')
+        myContainer.current.value('')
+
+      }
+
+      const SearchCard = (type,content) =>{
+
+        return(
+        <NewLi to={`/DetailPage/${type}/${content.mal_id}` }
+                onClick={DefaultValue}>    
+            <SearchDetailCard>
+                    <ImgContainer>
+                        <ImgHolder src = {content.image_url} alt=""/>
+                    </ImgContainer>
+
+                <SearchCardLeftDetail>
+
+                    <TextWrapperDiv>
+                        <MainText isTitle={true}>{content.title}</MainText>
+                        &nbsp;
+                        <MainText isTitle={false}>({content.type})</MainText>
+                    </TextWrapperDiv>
+
+                        {type === 'Anime' ?
+                        <TextWrapperDiv>
+                            <MainText isTitle={false}>Aired :{ProccessDate(content.start_date,content.end_date) } </MainText>
+                        </TextWrapperDiv>
+                            :
+                        <TextWrapperDiv>
+                            <MainText isTitle={false}>Published :{ProccessDate(content.start_date,content.end_date) } </MainText>
+                        </TextWrapperDiv>
+                    
+                        }
+                       
+
+                        <TextWrapperDiv>
+                            <MainText isTitle={false}>Score : {content.score === 0?'N/A':content.score}</MainText>
+                        </TextWrapperDiv>
+
+                        <TextWrapperDiv>
+                            <MainText isTitle={false}>Status : {ProccessStatus(content.start_date,content.end_date)}</MainText>
+                        </TextWrapperDiv>
+                </SearchCardLeftDetail>
+            </SearchDetailCard>
+        </NewLi>
+        )
+      }
 
 
     return (
             <Nav>
-                <SearchResultContainer Display={InputLength}> 
-                    <WarningText Display={InputLength}>Input must be the Minimum of 3 letters to search</WarningText>
-                    
-                    <SearchCardContainer Display={InputLength}>
-                    {isLoading?<h1>Loading...</h1>:
-                         AnimeDetail.results.map((content)=>(
+                <SearchResultContainer Display={InputLength} MobileDisplay={MobileQuery}> 
 
-                    <NewLi to={`/DetailPage/${content.mal_id}` }
-                            onClick={()=>SetInputLength('')}>    
-                        <SearchDetailCard>
-                            <ImgContainer>
-                                <ImgHolder src = {content.image_url} alt=""/>
-                            </ImgContainer>
-    
-                            <SearchCardLeftDetail>
-                                
-                                <TextWrapperDiv>
-                                    <MainText isTitle={true}>{content.title}</MainText>
-                                    &nbsp;
-                                    <MainText isTitle={false}>({content.type})</MainText>
-                                </TextWrapperDiv>
-                               
-                                <TextWrapperDiv>
-                                    <MainText isTitle={false}>Aired :{ProccessDate(content.start_date,content.end_date) } </MainText>
-                                </TextWrapperDiv>
-    
-                                <TextWrapperDiv>
-                                    <MainText isTitle={false}>Score : {content.score === 0?'N/A':content.score}</MainText>
-                                </TextWrapperDiv>
-    
-                                <TextWrapperDiv>
-                                    <MainText isTitle={false}>Status : {ProccessStatus(content.start_date,content.end_date)}</MainText>
-                                </TextWrapperDiv>
-    
-                               
-                                
-    
-                            </SearchCardLeftDetail>
-    
-                        </SearchDetailCard>
-                        </NewLi>
-                        ))
-                    }
+                {MobileQuery.length<3? 
+                <WarningText Display={InputLength} >Input must be the Minimum of 3 letters to search</WarningText>
+                :
+                <WarningText Display={MobileQuery.length} >Input must be the Minimum of 3 letters to search</WarningText>
+                }
+                   
+                {MobileQuery.length < 3 ?
+                    <SearchCardContainer Display={InputLength} >
+                    <TypeP>Anime</TypeP>
+                    {isLoading?<h1>Loading...</h1>:
+                   
+                    AnimeDetail.results.map((content)=>(
+
+                        SearchCard('Anime',content)
+
+       
+                    ))
+                }
+                    <TypeP>Manga</TypeP>
+                    {isLoading?<h1>Loading...</h1>:
+                   
+                   MangaDetail.results.map((content)=>(
+                         SearchCard('Manga',content)
+                    ))
+                }
+
 
                     </SearchCardContainer>
+
+:
+
+                <SearchCardContainer Display={MobileQuery.length} >
+                   <TypeP>Anime</TypeP>
+                    {isLoading?<h1>Loading...</h1>:
+                   
+                    AnimeDetail.results.map((content)=>(
+
+                        SearchCard('Anime',content)
+
+       
+                    ))
+                }
+                    <TypeP>Manga</TypeP>
+                    {isLoading?<h1>Loading...</h1>:
+                   
+                   MangaDetail.results.map((content)=>(
+                         SearchCard('Manga',content)
+                    ))
+                }
+</SearchCardContainer>
+
+                        
+                    }
+
+                   
                     
                 </SearchResultContainer>
 
                 <NewLi to={'/'}><Logo src={logo}  /></NewLi>
                 <Ul>
-                    <Li><NewLi to={'Genre/'}>Anime</NewLi></Li>
-                    <Li>Manga</Li>
+                    <Li><NewLi to={'Genre/Anime'}>Anime</NewLi></Li>
+                    <Li><NewLi to={'Genre/Manga'}>Manga</NewLi></Li>
                 </Ul>
                <SearchBar>
-                   <CustomInput type='text' placeholder='Search'  onChange = {(e)=>Test(e.target.value)}/>
+                   <CustomInput ref={myContainer} type='text' placeholder='Search'  onChange = {(e)=>Test(e.target.value)}/>
                </SearchBar>
                <PhoneMenuContainer>
-                   <MenuSearch/>
+                   <MenuSearch onClick={OpenSearch}/>
                     <Menu onClick={test}/>
                </PhoneMenuContainer>
             </Nav>

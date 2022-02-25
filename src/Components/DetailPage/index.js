@@ -55,11 +55,25 @@ const params = useParams()
 
     const getData = async () =>{
 
+      if (params.type === 'Anime') {
 
-      const result = await axios (`https://api.jikan.moe/v3/anime/${params.id}`)
+        const result = await axios (`https://api.jikan.moe/v3/anime/${params.id}`)
         
-      setAnimeDetail(result.data)
-      setIsloading(false)
+        setAnimeDetail(result.data)
+        setIsloading(false)
+        
+      }else{
+
+        const result = await axios (`https://api.jikan.moe/v3/manga/${params.id}`)
+        
+        setAnimeDetail(result.data)
+        setIsloading(false)
+        
+
+        
+      }
+
+     
 
 
     }
@@ -89,7 +103,7 @@ const params = useParams()
                     <AlternativeTitles_title>
                         Alternative Titles
                     </AlternativeTitles_title>
-                    <AlternativeTitles_Container>
+                    <AlternativeTitles_Container BgClr={'white'}>
                         <AlternativeTitles_content>
                            Synonym: 
                             {AnimeDetail.title_synonyms.length > 0 ?
@@ -121,20 +135,37 @@ const params = useParams()
                     <AlternativeTitles_title>
                       Information
                     </AlternativeTitles_title>
-                    <AlternativeTitles_Container>
+                    <AlternativeTitles_Container  BgClr={'white'}>
                       <AlternativeTitles_content>
                        Type: {AnimeDetail.type}
                       </AlternativeTitles_content>
-                      <AlternativeTitles_content>
-                       Episodes: {AnimeDetail.episodes}
-                      </AlternativeTitles_content>        
+                        
+                        {params.type === 'Anime'?
+                        <AlternativeTitles_content>
+                         Episodes: {AnimeDetail.episodes}
+                        </AlternativeTitles_content>   
+                        :
+                        <>
+                          <AlternativeTitles_content>
+                            Volumes: {AnimeDetail.volumes}
+                          </AlternativeTitles_content>
+                          <AlternativeTitles_content>
+                            Chapters: {AnimeDetail.chapters}
+                          </AlternativeTitles_content>      
+                       </>
+                        }
+
+                           
                       <AlternativeTitles_content>
                        Status: {AnimeDetail.status}
                       </AlternativeTitles_content>
+
+                      {params.type === 'Anime'?
+                      <>
                       <AlternativeTitles_content>
-                       Aired: {AnimeDetail.aired.string}
+                      Aired: {AnimeDetail.aired.string}
                       </AlternativeTitles_content>
-                      <AlternativeTitles_content>
+                       <AlternativeTitles_content>
                        Premiered: {AnimeDetail.premiered}
                       </AlternativeTitles_content> 
                       <AlternativeTitles_content>
@@ -182,6 +213,12 @@ const params = useParams()
                       <AlternativeTitles_content>
                        Source: {AnimeDetail.source}
                       </AlternativeTitles_content>
+                      </>
+                      :
+                      <></>
+                      }
+        
+                     
                       <AlternativeTitles_content>
                        Genres: 
                         {AnimeDetail.genres.length > 0 ?
@@ -225,17 +262,25 @@ const params = useParams()
                             <> - </>
                             }
                       </AlternativeTitles_content> 
-                      <AlternativeTitles_content>
-                       Duration: {AnimeDetail.duration}
-                      </AlternativeTitles_content> 
-                      <AlternativeTitles_content>
-                       Rating: {AnimeDetail.rating}
-                      </AlternativeTitles_content> 
 
+                        {params.type === 'Anime'?
+                        <>
+                          <AlternativeTitles_content>
+                            Duration: {AnimeDetail.duration}
+                          </AlternativeTitles_content> 
+                          <AlternativeTitles_content>
+                            Rating: {AnimeDetail.rating}
+                          </AlternativeTitles_content> 
+                        </>
+                        :
+                        <></>  
+                      }    
+
+                    
                       <AlternativeTitles_title>
                        Statistics
                       </AlternativeTitles_title>
-                       <AlternativeTitles_Container>        
+                       <AlternativeTitles_Container  BgClr={'white'}>        
                         <AlternativeTitles_content>
                          Score: {AnimeDetail.score} (Scored by {AnimeDetail.scored_by} Users )
                         </AlternativeTitles_content>
@@ -295,12 +340,12 @@ const params = useParams()
                           <RouteNav>
                               <DetailRouteLinks>Top</DetailRouteLinks>
                               <DetailRouteLinks>{` > `}</DetailRouteLinks>
-                              <DetailRouteLinks>Anime</DetailRouteLinks>
+                              <DetailRouteLinks>{params.type}</DetailRouteLinks>
                               <DetailRouteLinks>{` > `}</DetailRouteLinks>
                               <DetailRouteLinks>TBD</DetailRouteLinks>
                           </RouteNav>
-                        
-                           <DetailTab AnimeId = {params.id} />
+                            
+                           <DetailTab AnimeId = {params.id} IsAnime = {params.type === 'Anime' ? true:false} />
 
                            
                 </RightContent>
@@ -320,7 +365,9 @@ const params = useParams()
                   <MobileText FontSize = {'12px'} Bold={false}> ({AnimeDetail.scored_by} users)</MobileText>
                 </TextContainer>
         
-                <MobileText FontSize = {'13px'} Bold={true} GiveMargin={true}> Ranked #{AnimeDetail.rank}</MobileText>
+                <MobileText FontSize = {'14px'} Bold={true} GiveMargin={true}> Ranked #{AnimeDetail.rank}</MobileText>
+               
+               {params.type === 'Anime'?
                
                 <TextContainer  FlexDir={'column'}>
                   <MobileText FontSize = {'15px'} Bold={true}> {AnimeDetail.type} ({AnimeDetail.episodes} Eps)</MobileText>
@@ -338,7 +385,12 @@ const params = useParams()
                   )                              )}
                   
                 </TextContainer>
-                
+               :
+               <>
+               <MobileText FontSize = {'14px'} Bold={true} GiveMargin={true}> {AnimeDetail.type} ({AnimeDetail.volumes} Vol)</MobileText>
+               </>
+               }
+               
                 <TextContainer  FlexDir={'row'}>
                   <PlayIcon/>
                   <MobileText FontSize = {'15px'} Bold={true}> More Information</MobileText>
@@ -351,7 +403,7 @@ const params = useParams()
                         <RouteNav>
                               <DetailRouteLinks>Top</DetailRouteLinks>
                               <DetailRouteLinks>{` > `}</DetailRouteLinks>
-                              <DetailRouteLinks>Anime</DetailRouteLinks>
+                              <DetailRouteLinks>{params.type}</DetailRouteLinks>
                               <DetailRouteLinks>{` > `}</DetailRouteLinks>
                               <DetailRouteLinks>TBD</DetailRouteLinks>
                           </RouteNav>
@@ -363,28 +415,56 @@ const params = useParams()
                             <MobileText FontSize = {'13px'} Bold={false}> {AnimeDetail.synopsis} </MobileText>
                           </TextContainer>
 
-                          <TextContainer  FlexDir={'row'}>
-                            <MobileText FontSize = {'17px'} Bold={true}> Characters and Voice Actors </MobileText>
-                          </TextContainer>
+                          {params.type === 'Anime' ?
+                          <>
+                            <TextContainer  FlexDir={'row'}>
+                              <MobileText FontSize = {'17px'} Bold={true}> Characters and Voice Actors </MobileText>
+                            </TextContainer>
         
-                          <Va_Character_Staff IDAnim={params.id} isStaff = {false}/>
+                            <Va_Character_Staff IDAnim={params.id} isStaff = {false} IsAnime={true}/>
                          
+                            <TextContainer  FlexDir={'row'}>
+                              <MobileText FontSize = {'17px'} Bold={true}> Staff </MobileText>
+                            </TextContainer>
+
+                            <Va_Character_Staff IDAnim={params.id} isStaff = {true} IsAnime={true}/>
+
+                            <TextContainer  FlexDir={'row'}>
+                              <MobileText FontSize = {'17px'} Bold={true}> Reviews </MobileText>
+                            </TextContainer>
+
+                            <ReviewCard AnimeID={params.id} IsAnime={true}/>
+                          
+                          </>
+                          :
+                          <>
                           <TextContainer  FlexDir={'row'}>
-                            <MobileText FontSize = {'17px'} Bold={true}> Staff </MobileText>
+                            <MobileText FontSize = {'17px'} Bold={true}> Background </MobileText>
                           </TextContainer>
-
-                          <Va_Character_Staff IDAnim={params.id} isStaff = {true}/>
-
                           <TextContainer  FlexDir={'row'}>
-                            <MobileText FontSize = {'17px'} Bold={true}> Reviews </MobileText>
+                            <MobileText FontSize = {'13px'} Bold={false}> {AnimeDetail.background} </MobileText>
                           </TextContainer>
+                          <TextContainer  FlexDir={'row'}>
+                              <MobileText FontSize = {'17px'} Bold={true}> Characters </MobileText>
+                            </TextContainer>
+        
+                            <Va_Character_Staff IDAnim={params.id} isStaff = {false} IsAnime={false}/>
 
-                          <ReviewCard AnimeID={params.id}/>
+                            <TextContainer  FlexDir={'row'}>
+                              <MobileText FontSize = {'17px'} Bold={true}> Reviews </MobileText>
+                            </TextContainer>
+
+                            <ReviewCard AnimeID={params.id} IsAnime={false}/>
+                          </>
+                        
+                          }
+
+                          
 
                           <TextContainer  FlexDir={'row'}>
                             <MobileText FontSize = {'17px'} Bold={true}> Information </MobileText>
                           </TextContainer>
-                          <AlternativeTitles_Container>
+                          <AlternativeTitles_Container BgClr={'#20AFA1'}>
                           <AlternativeTitles_content>
                            Synonym: 
                             {AnimeDetail.title_synonyms.length > 0 ?
@@ -414,6 +494,9 @@ const params = useParams()
                         <AlternativeTitles_content>
                        Type: {AnimeDetail.type}
                       </AlternativeTitles_content>
+
+                            {params.type === 'Anime'?
+                            <>
                       <AlternativeTitles_content>
                        Episodes: {AnimeDetail.episodes}
                       </AlternativeTitles_content>        
@@ -472,6 +555,26 @@ const params = useParams()
                        Source: {AnimeDetail.source}
                       </AlternativeTitles_content>
                       <AlternativeTitles_content>
+                       Duration: {AnimeDetail.duration}
+                      </AlternativeTitles_content> 
+                      <AlternativeTitles_content>
+                       Rating: {AnimeDetail.rating}
+                      </AlternativeTitles_content> 
+                            </>
+                            :  
+                            <>
+                             <AlternativeTitles_content>
+                            Volumes: {AnimeDetail.volumes}
+                          </AlternativeTitles_content>
+                          <AlternativeTitles_content>
+                            Chapters: {AnimeDetail.chapters}
+                          </AlternativeTitles_content> 
+                            </>
+                          }
+
+                     
+                      
+                      <AlternativeTitles_content>
                        Genres: 
                         {AnimeDetail.genres.length > 0 ?
                             AnimeDetail.genres.map((content,index,arr)=>(
@@ -514,13 +617,6 @@ const params = useParams()
                             <> - </>
                             }
                       </AlternativeTitles_content> 
-                      <AlternativeTitles_content>
-                       Duration: {AnimeDetail.duration}
-                      </AlternativeTitles_content> 
-                      <AlternativeTitles_content>
-                       Rating: {AnimeDetail.rating}
-                      </AlternativeTitles_content> 
-
                     </AlternativeTitles_Container>
 
        

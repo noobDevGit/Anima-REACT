@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Pic from '../../logo/search.png'
+import Pic from '../../logo/search.png';
 import {FiMenu, FiSearch} from "react-icons/fi";
 import { Link } from "react-router-dom";
 
@@ -138,6 +138,7 @@ color: white;
 export const NewLi = styled(Link)`
 
 text-decoration: none;
+color: #20AFA1;
 
     &:focus, &:hover, &:visited, &:link, &:active {
         text-decoration: none;
@@ -150,12 +151,12 @@ export const SearchResultContainer = styled.div`
     width: 350px;
     height: auto;
     position: absolute;
-    background-color: beige;
-    right: 0px;
-    top: 70px;
-    display: ${props => props.Display > 0?'block':'none'}; ;
-    z-index: 2;
+    background-color: black;
+    display: ${props => props.Display > 0?'block':'none'}; 
+    z-index: 4;
+    ${props => props.MobileDisplay !== ''?' display:block; transform: translate(-50%, -50%);top: 690px;left: 50%;':'right: 0px;top: 70px;'}; 
     
+   
 
 `
 
@@ -165,9 +166,9 @@ export const WarningText = styled.p`
     height: auto;
     font-family: 'Fredoka One', cursive;
     font-size: 14px;
-    background-color: blue;
-    display: ${props => props.Display < 3?'block':'none'}; ;
-
+    color: white;
+    background-color: #20AFA1;
+    display: ${props => props.Display < 3?'block':'none'}; 
 
 `
 
@@ -176,7 +177,6 @@ export const SearchDetailCard = styled.div`
     display: flex;
     width: 100%;
     height: 100px;
-    background-color: cadetblue;
     padding: 4px;
 
 `
@@ -185,14 +185,14 @@ export const ImgContainer = styled.div`
 
 width: 24%;
 height: 100%;
-background-color: coral;
+background-color: white;
 
 `
 
 export const SearchCardLeftDetail = styled.div`
 width: 76%;
 height: 100%;
-background-color: cornflowerblue;
+background-color: white;
 display: flex;
 flex-direction: column;
 padding: 5px;
@@ -231,7 +231,17 @@ export const SearchCardContainer = styled.div`
 
     height: auto;
     width: 100%;
-    display: ${props => props.Display < 3?'none':'flex'}; 
+    display: ${props => props.Display < 3 ?'none':'flex'}; 
     flex-direction: column;
+    
+    
 
+`
+
+export const TypeP= styled.div`
+    width: 100%;
+    padding: 0 5px;
+    font-family:'Fredoka One', cursive ;
+    color: white;
+    background-color: #20AFA1 ;
 `

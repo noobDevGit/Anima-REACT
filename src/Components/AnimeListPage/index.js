@@ -12,7 +12,10 @@ import {Container,
     StarIcon,
     AnimeListPoster,
     NavLink,
-    PaginateContainer} from "./AnimeListElements"
+    PaginateContainer,
+    SmallDeviceRibbon,
+    SmallDeviceBottomRibbon,
+    GenreDiv} from "./AnimeListElements"
     
     import {useNavigate} from 'react-router-dom';
 
@@ -34,7 +37,9 @@ const AnimeList = () => {
   const [isLoading,setIsloading]=useState(true);
 
   //pageCount
-  const [PageCount,setPageCount] = useState(0)
+  const [PageCount,setPageCount] = useState(0);
+
+  const [isType,setIsType] =useState('')
 
 
 
@@ -68,7 +73,7 @@ const AnimeList = () => {
 const handleClick = (event) => {
             
             let Cur = event.selected + 1
-            navigate(`/Genre/List/${params.id}/${Cur}`, {replace: true})
+            navigate(`/Genre/${params.type}/List/${params.genre}/${params.id}/${Cur}`, {replace: true})
 
      
 }
@@ -80,7 +85,9 @@ const handleClick = (event) => {
 
     const getData = async () =>{
 
-        
+        if (params.type === 'Anime') {
+
+         setIsType('anime')   
 
         const result = await axios (`https://api.jikan.moe/v3/genre/anime/${params.id}/${params.page}`)
 
@@ -91,6 +98,28 @@ const handleClick = (event) => {
         setAnimeDetail(result.data)
         setIsloading(false)
         window.scrollTo(0, 0)
+            
+        }else{
+
+        setIsType('manga')    
+
+        const result = await axios (`https://api.jikan.moe/v3/genre/manga/${params.id}/${params.page}`)
+
+        const pageCount = Math.ceil(parseInt(result.data.item_count) / 100)
+
+        setPageCount(pageCount)
+        
+        setAnimeDetail(result.data)
+        setIsloading(false)
+        window.scrollTo(0, 0)
+
+        
+
+
+
+        }
+
+        
 
 
     }
@@ -109,19 +138,70 @@ const handleClick = (event) => {
 
     return isLoading ? <h1>Loading....</h1>:
     <>
+            
         <Container>
-            {AnimeDetail.anime.map((content)=>(
+            <GenreDiv>
+            {params.genre.replace('_',' ')} {params.type}
+            </GenreDiv>
+            {AnimeDetail[isType].map((content)=>(
                 <AnimeListCardContainer>
                     <AnimeListTitleDiv>
                         <AnimeListParagraph Title={true} Size={'16px'}>
-                           <NavLink to={`/DetailPage/${content.mal_id}`}>{content.title}</NavLink> 
+                            {params.type === 'Anime'?
+                            <NavLink to={`/DetailPage/Anime/${content.mal_id}`}>{content.title}</NavLink> 
+                            :
+                            <NavLink to={`/DetailPage/Manga/${content.mal_id}`}>{content.title}</NavLink> 
+                            }
                         </AnimeListParagraph>
                     </AnimeListTitleDiv>
 
-                    <AnimeListDetailRibbon>
-                        <AnimeListParagraph Title={false} Size={'12px'}>
-                            {content.episodes} episodes
+                    <SmallDeviceRibbon>
+                        <AnimeListParagraph Title={true} Size={'16px'}>
+                            {params.type === 'Anime'?
+                            <NavLink to={`/DetailPage/Anime/${content.mal_id}`}>{content.title}</NavLink>
+                            :
+                            <NavLink to={`/DetailPage/Manga/${content.mal_id}`}>{content.title}</NavLink>
+                            }
+                            
                         </AnimeListParagraph>
+                        
+                        <SmallDeviceBottomRibbon>
+                            {params.type === 'Anime'?
+                            <AnimeListParagraph Title={false} Size={'12px'}>
+                            {content.episodes} episodes
+                            </AnimeListParagraph>
+                            :
+                            <AnimeListParagraph Title={false} Size={'12px'}>
+                            {content.volumes} volumes
+                            </AnimeListParagraph>
+                            }
+                          
+
+                            <StarIcon/> 
+
+                            <AnimeListParagraph Title={false} Size={'12px'}>
+                                {content.score} 
+                            </AnimeListParagraph>
+
+                           <PersonIcon />
+
+                            <AnimeListParagraph Title={false} Size={'12px'}>
+                                {content.members}
+                            </AnimeListParagraph>
+
+                        </SmallDeviceBottomRibbon>
+                    </SmallDeviceRibbon>
+
+                    <AnimeListDetailRibbon>
+                    {params.type === 'Anime'?
+                            <AnimeListParagraph Title={false} Size={'12px'}>
+                            {content.episodes} episodes
+                            </AnimeListParagraph>
+                            :
+                            <AnimeListParagraph Title={false} Size={'12px'}>
+                            {content.volumes} volumes
+                            </AnimeListParagraph>
+                            }
                     </AnimeListDetailRibbon>
 
                     <AnimeListDetailRibbon>
@@ -134,9 +214,16 @@ const handleClick = (event) => {
 
                     <AnimeListDetailContainer>
                         <AnimeListImage>
-                            <NavLink to={`/DetailPage/${content.mal_id}`}>
-                                <AnimeListPoster src={content.image_url}/>  
-                            </NavLink>     
+                            {params.type === 'Anime'?
+                            <NavLink to={`/DetailPage/Anime/${content.mal_id}`}>
+                            <AnimeListPoster src={content.image_url}/>  
+                            </NavLink>  
+                            :
+                            <NavLink to={`/DetailPage/Manga/${content.mal_id}`}>
+                            <AnimeListPoster src={content.image_url}/>  
+                            </NavLink>  
+                            }
+                               
                         </AnimeListImage>
     
                         <AnimeListRightContent>
@@ -145,33 +232,43 @@ const handleClick = (event) => {
                                 {content.synopsis}
                             </AnimeListParagraph>
 
-                        {content.producers.length === 0?
-                        <></>:
-                        <RightDetailDiv>
-                            <AnimeListParagraph Title={true} Size={'12px'} >
-                                Studios :&nbsp;
-                            </AnimeListParagraph>
-                            
-                              {content.producers.map((studio,index,arr)=>(
-                                <AnimeListParagraph Title={false} Size={'12px'} >
-                                {arr.length - 1 === index?
-                                    <>{studio.name}</>
-                                    :
-                                    <>{studio.name},&nbsp;</>}
+                        {params.type === 'Anime'?
+                        content.producers.length === 0?
+                            <></>:
+                            <RightDetailDiv>
+                                <AnimeListParagraph Title={true} Size={'12px'} >
+                                    Studios :&nbsp;
                                 </AnimeListParagraph>
-                                ))}
-                        </RightDetailDiv>
+                                
+                                  {content.producers.map((studio,index,arr)=>(
+                                    <AnimeListParagraph Title={false} Size={'12px'} >
+                                    {arr.length - 1 === index?
+                                        <>{studio.name}</>
+                                        :
+                                        <>{studio.name},&nbsp;</>}
+                                    </AnimeListParagraph>
+                                    ))}
+                            </RightDetailDiv>
+                            
+                        
+                        :
+                        <></>
                         }
                         
-                        
+                        {params.type === 'Anime' ?
                         <RightDetailDiv>
-                            <AnimeListParagraph Title={true} Size={'12px'} >
-                                Source :&nbsp;
-                            </AnimeListParagraph>
-                            <AnimeListParagraph Title={false} Size={'12px'} >
-                                {content.source}
-                            </AnimeListParagraph>
+                        <AnimeListParagraph Title={true} Size={'12px'} >
+                            Source :&nbsp;
+                        </AnimeListParagraph>
+                        <AnimeListParagraph Title={false} Size={'12px'} >
+                            {content.source}
+                        </AnimeListParagraph>
                         </RightDetailDiv>
+                        :
+                        <></>
+                        }
+                    
+                        
 
                         {content.themes.length === 0?
                         <></>:

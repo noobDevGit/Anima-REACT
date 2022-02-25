@@ -5,29 +5,30 @@ import { AiFillPlayCircle } from "react-icons/ai";
 export const Container = styled.div`
     width: 100%;
     height: auto;
-    background-color: brown;
     padding-bottom: 10px;
     `
 export const MainScoreHeader = styled.div`
 
     width: 90%;
     height: 100px;
-    background-color: lavender;
     padding: 15px 0;
     display: flex;
     flex-direction: row;
     margin-bottom: 35px;
+    background-color: #20AFA1 ;
 
 `
 export const ScoreDiv = styled.div`
 
     width: 120px;
     height: 100%;
-    background-color: floralwhite;
+    background-color:  #20AFA1;
+    color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    border-right: 1px solid white;
 
 `
 
@@ -38,7 +39,7 @@ export const FlexContainer = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: sandybrown;
+    background-color:  #20AFA1;
 
 `
 
@@ -47,9 +48,11 @@ export const FlexTop = styled.div`
     width: 400px;
     height: 70%;
     display: flex;
-    background-color: lawngreen;
+    background-color: #20AFA1;
     justify-content: space-between;
     align-items: center;
+    color: white;
+    padding: 0 10px;
 
 
 `
@@ -59,7 +62,8 @@ export const FlexBottom = styled.div`
     width: 400px;
     height: 30%;
     display: flex;
-    background-color: sienna;
+    background-color:  #20AFA1;
+    color: white;
 
 
 `
@@ -70,13 +74,14 @@ export const ScoreTitle = styled.p`
     font-family: 'Fredoka One', cursive;
     font-size: 11px;
     font-style: normal;
-    background-color: darkgreen;
+    background-color: white;
     width: 75px;
     height: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 2px;
+    color: black;
  
 `
 
@@ -119,11 +124,13 @@ export const ContentTitleContainer = styled.div`
 
     width: 100%;
     height: 30px;
-    background-color: fuchsia;
+    color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-top: 1px solid #20AFA1;
+    border-bottom: 1px solid #20AFA1;
 
 
 `
@@ -139,7 +146,7 @@ export const ContentContainer = styled.div`
 
 width: 100%;
 height: auto;
-background-color: gainsboro;
+color: white;
 font-family: 'Open Sans', sans-serif;
 font-size: 12px;
 line-height: 1.6;
@@ -151,8 +158,8 @@ export const RelatedAnimeContent = styled.div`
 padding: 5px 0;
 font-family: 'Open Sans', sans-serif;
 font-size: 12px;
-background-color: gainsboro;
-border-bottom: 1px solid black;
+color: white;
+border-bottom: 1px solid  #20AFA1;
  
 
 `
@@ -171,7 +178,6 @@ export const ThemeContainer = styled.div`
 
     width: 100%;
     height: auto;
-    background-color: goldenrod;
     display: flex;
 `
 
@@ -179,7 +185,6 @@ export const ThemeHalfContainer = styled.div`
 
     width: 50%;
     height: 100%;
-    border: solid 1px red;
     display: flex;
     flex-direction: column;
 `
@@ -192,8 +197,9 @@ export const ThemeContent = styled.div`
     font-family: ${props => props.isTitle?'Fredoka One, cursive':'Open Sans, sans-serif'};
     font-size: ${props => props.isTitle?'14px':'11px'};
     padding: 5px 0;
-    background-color: azure;
-    border: solid 1px red;
+    color: white;
+    ${props => props.isTitle?'border-bottom: 1px solid  #20AFA1;':'11px'};
+    
 `
 
 export const PlayIcon = styled(AiFillPlayCircle)`
@@ -205,7 +211,7 @@ export const PlayIcon = styled(AiFillPlayCircle)`
 export const ReviewContainer = styled.div`
 
     width: 100%;
-    background-color: darkolivegreen;
+
     height: auto;
 
 `

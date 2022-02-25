@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 
 export const Container = styled.div`
-    background-color: beige;
+    background-color: black;
     width: 94%;
-    height: auto;
+    height: 100vh;
     margin: auto;
     padding: 10px 0;
 
-    @media screen and (max-width: 376px){
+    @media screen and (max-width: 880px){
         width: 100%;
     }
 `
@@ -27,11 +27,11 @@ export const BtnContainer = styled.div`
 export const GenreBtn = styled.div`
     width: 20%;
     height: 40px;
-    border: 1px solid black;
+    border-bottom: 1px solid #20AFA1;
     display: flex;
     align-items: center;
 
-    @media screen and (max-width: 376px){
+    @media screen and (max-width: 880px){
         width: 50%;
     }
 
@@ -41,13 +41,16 @@ export const GenreBtn = styled.div`
 
 export const TitleDiv = styled.div`
     width: 100%;
-    height: auto;
+    padding: 8px 5px;
     font-family: 'Fredoka One', cursive;
     font-size: 18px;
-    background-color: blanchedalmond;
+    color: #20AFA1;
+    border-bottom: 1px solid #20AFA1;
+    border-top: 1px solid #20AFA1;
+    
 
     
-    @media screen and (max-width: 376px){
+    @media screen and (max-width: 880px){
         text-align: center;
         height: 30px;
         display: flex;
@@ -67,6 +70,7 @@ export const ArrowNavright = styled(MdOutlineArrowForwardIos)`
 export const NavLink = styled(Link)`
 
 text-decoration: none;
+color: white;
 
     &:focus, &:hover, &:visited, &:link, &:active {
         text-decoration: none;

@@ -6,6 +6,8 @@ export const VaContent = styled.div`
 width: 50%;
 height: 75px;
 display: flex;
+background-color: #20AFA1;
+color: white;
 
 @media screen and (max-width: 945px){
 display: none;
@@ -17,8 +19,9 @@ export const VaContentMobile = styled.div`
 
 width: 100%;
 height: 100px;
-background-color: blueviolet;
 display: none;
+background-color: #20AFA1;
+color: white;
 
 
 
@@ -38,7 +41,6 @@ export const VaContentMobileContainer = styled.div`
 
 width: 100%;
 height: auto;
-background-color: blueviolet;
 display: none;
 position: relative;
 
@@ -54,7 +56,7 @@ export const RightContent = styled.div`
 
  width : ${props => props.FullWidth?'100%':'50%'};
  height: 100%;
- border: 1px solid black;
+ border: 1px solid white;
  padding: 2px;
  display: flex;
  flex-direction: ${props => props.reverse?'row-reverse':`row`};
@@ -76,7 +78,6 @@ export const ImgHolder = styled.img`
 export const DetailContent = styled.div`
     width: 100%;
     height: 100%;
-    background-color: hotpink;
     display: flex;
     flex-direction: column;
     padding: 0 8px;

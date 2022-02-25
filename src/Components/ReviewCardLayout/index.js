@@ -11,7 +11,7 @@ import { useState,useEffect } from 'react';
 
 import axios from 'axios'
 
-const ReviewCard = ({AnimeID}) => {
+const ReviewCard = ({AnimeID,IsAnime}) => {
 
 
     // Anime data Container 
@@ -25,18 +25,31 @@ const ReviewCard = ({AnimeID}) => {
     useEffect(()=>{
   
       const getData = async () =>{
-  
-  
-        
-        const result = await axios (`https://api.jikan.moe/v3/anime/${AnimeID}/reviews`)
-        
-        setAnimeDetail(result.data)
+        if (IsAnime) {
 
-        setIsloading(false)
+        
+          const result = await axios (`https://api.jikan.moe/v3/anime/${AnimeID}/reviews`)
+          
+          setAnimeDetail(result.data)
+  
+          setIsloading(false)
+    
+    
+        }else{
   
   
+        
+          const result = await axios (`https://api.jikan.moe/v3/manga/${AnimeID}/reviews`)
+          
+          setAnimeDetail(result.data)
+  
+          setIsloading(false)
+    
+    
+        }
+
       }
-  
+     
       
   
       getData()
@@ -62,7 +75,14 @@ const ReviewCard = ({AnimeID}) => {
         <TopContent reverse={true} FullWidth={false}>
             <DetailContent FlexEnd = {true}>
                 <ContentP>{content.date.substr(8,2)}-{content.date.substr(5,2)}-{content.date.substr(0,4)}</ContentP>
+                
+                {IsAnime ?
                 <ContentP>{content.reviewer.episodes_seen} Episode seen</ContentP>
+                :
+                <ContentP>{content.reviewer.chapters_read} Chapters read</ContentP>
+                }
+                
+                
                 <ContentP>Overall Rating: {content.reviewer.scores.overall}</ContentP>
             </DetailContent>
         </TopContent>

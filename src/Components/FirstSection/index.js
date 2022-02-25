@@ -89,7 +89,8 @@ return Loading ? <h1>Loading....</h1>:
         
                     
                     <BtnDetailContainer>
-                        <BtnDetail isLightBg = {isLightBg}><Link to={`DetailPage/${FeaturedAnime.mal_id}`}>View Detail</Link></BtnDetail>
+                        <BtnDetail isLightBg = {isLightBg}>
+                            <Link to={isAnime?`DetailPage/Anime/${FeaturedAnime.mal_id}`:`DetailPage/Manga/${FeaturedAnime.mal_id}`}>View Detail</Link></BtnDetail>
                     </BtnDetailContainer>
 
                 </DetailContainer>
