@@ -42,7 +42,7 @@ const DetailPage = () => {
 const params = useParams()
 
 
-  // Anime data Container 
+  // Anime Container 
   const [AnimeDetail,setAnimeDetail]=useState({})
 
   // Loading
@@ -57,16 +57,17 @@ const params = useParams()
 
       if (params.type === 'Anime') {
 
-        const result = await axios (`https://api.jikan.moe/v3/anime/${params.id}`)
+        const result = await axios (`https://api.jikan.moe/v4/anime/${params.id}/full`)
         
-        setAnimeDetail(result.data)
+        
+        setAnimeDetail(result.data.data)
         setIsloading(false)
         
       }else{
 
-        const result = await axios (`https://api.jikan.moe/v3/manga/${params.id}`)
+        const result = await axios (`https://api.jikan.moe/v4/manga/${params.id}/full`)
         
-        setAnimeDetail(result.data)
+        setAnimeDetail(result.data.data)
         setIsloading(false)
         
 
@@ -98,7 +99,7 @@ const params = useParams()
             <MainContentWrapper>
                 
                 <LeftContent>
-                    <AnimePoster src = {AnimeDetail.image_url} alt=""/>
+                    <AnimePoster src = {AnimeDetail.images.jpg.image_url} alt=""/>
 
                     <AlternativeTitles_title>
                         Alternative Titles
@@ -122,7 +123,7 @@ const params = useParams()
 
                         <AlternativeTitles_content>
                           Japanese: {AnimeDetail.title_japanese}
-                        </AlternativeTitles_content>
+                        </AlternativeTitles_content> 
 
                         <AlternativeTitles_content>
                           English: {AnimeDetail.title_english === null?
@@ -136,7 +137,7 @@ const params = useParams()
                       Information
                     </AlternativeTitles_title>
                     <AlternativeTitles_Container  BgClr={'white'}>
-                      <AlternativeTitles_content>
+                       <AlternativeTitles_content>
                        Type: {AnimeDetail.type}
                       </AlternativeTitles_content>
                         
@@ -169,7 +170,7 @@ const params = useParams()
                        Premiered: {AnimeDetail.premiered}
                       </AlternativeTitles_content> 
                       <AlternativeTitles_content>
-                       Broadcast: {AnimeDetail.broadcast}
+                       Broadcast: {AnimeDetail.broadcast.string}
                       </AlternativeTitles_content> 
                       <AlternativeTitles_content>
                        Producers: 
@@ -303,8 +304,8 @@ const params = useParams()
                       </AlternativeTitles_title>
                        <AlternativeTitles_Container>        
                        <AlternativeTitles_content>
-                         {AnimeDetail.external_links.length > 0 ?
-                            AnimeDetail.external_links.map((content,index,arr)=>(
+                         {AnimeDetail.external.length > 0 ?
+                            AnimeDetail.external.map((content,index,arr)=>(
 
                             arr.length - 1 === index?
                             <> {content.name}</>
@@ -355,7 +356,7 @@ const params = useParams()
   {/*For Mobile  --------------------------------------------------------------------------------------------- */}
        
             <MobileTopContainer>
-              <AnimePoster src = {AnimeDetail.image_url} alt=""/>
+              <AnimePoster src = {AnimeDetail.images.jpg.image_url} alt=""/>
 
               <MobileTopContent>
                 
@@ -510,7 +511,7 @@ const params = useParams()
                        Premiered: {AnimeDetail.premiered}
                       </AlternativeTitles_content> 
                       <AlternativeTitles_content>
-                       Broadcast: {AnimeDetail.broadcast}
+                       Broadcast: {AnimeDetail.broadcast.string}
                       </AlternativeTitles_content> 
                       <AlternativeTitles_content>
                        Producers: 

@@ -43,8 +43,10 @@ function App() {
 
 
 
-      const resultAnime = await axios ('https://api.jikan.moe/v3/anime/48926')
-      const resultManga = await axios ('https://api.jikan.moe/v3/manga/2')
+      const resultAnime = await axios ('https://api.jikan.moe/v4/anime/48926/full')
+    
+      const resultManga = await axios ('https://api.jikan.moe/v4/manga/2/full')
+      
         
       setFeaturedManga(resultManga.data)
       setFeaturedAnime(resultAnime.data)

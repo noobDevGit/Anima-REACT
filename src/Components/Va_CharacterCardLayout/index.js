@@ -26,9 +26,6 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
     const [isLoading,setIsloading]=useState(true);
 
 
-    //Character Array
-    const [CharArray, setCharArray] = useState([])
-
     //Staff Array
     const [StaffArray, setStaffArray] = useState([])
   
@@ -48,26 +45,22 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
   
         if (IsAnime) {
 
-          const result = await axios (`https://api.jikan.moe/v3/anime/${IDAnim}/characters_staff`)
-        
-          setAnimeDetail(result.data)
+          const result = await axios (`https://api.jikan.moe/v4/anime/${IDAnim}/characters`)
+          const StaffResult = await axios (`https://api.jikan.moe/v4/anime/${IDAnim}/staff`)
           
-          setCharArray(result.data.characters)
-  
-          setStaffArray(result.data.staff)
+          setAnimeDetail(result.data.data)
+          
+          setStaffArray(StaffResult.data.data)
   
           setIsloading(false);
        
           
         }else{
 
-          const result = await axios (`https://api.jikan.moe/v3/manga/${IDAnim}/characters`)
-        
-          setAnimeDetail(result.data)
+          const result = await axios (`https://api.jikan.moe/v4/manga/${IDAnim}/characters`)
+         
+          setAnimeDetail(result.data.data)
           
-          setCharArray(result.data.characters)
-  
-          setStaffArray(result.data.staff)
   
           setIsloading(false);
 
@@ -126,7 +119,7 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
 
           if (CounterChar === 0) {
             
-            setCounterChar(CharArray.length-1)
+            setCounterChar(AnimeDetail.length-1)
       
           } else {
       
@@ -136,7 +129,7 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
       
         }else{
       
-          if (CounterChar === CharArray.length-1) {
+          if (CounterChar === AnimeDetail.length-1) {
       
             setCounterChar(0)
       
@@ -150,10 +143,6 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
       
       
       }
-
-
-
-   
      
     }
   
@@ -164,12 +153,12 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
 <>
 {IsAnime? 
   isStaff ?
-  AnimeDetail.staff.slice(0, 4).map((content)=>(
+  StaffArray.slice(0, 4).map((content)=>(
     <VaContent>
         <RightContent reverse={false} FullWidth={true}>
-          <ImgHolder src = {content.image_url} alt=""/>
+          <ImgHolder src = {content.person.images.jpg.image_url} alt=""/>
           <DetailContent FlexEnd = {false} > 
-            <ContentP>{content.name}</ContentP>
+            <ContentP>{content.person.name}</ContentP>
             <ContentArrayP> 
             {content.positions.map((content,index,arr)=>
                arr.length - 1 === index?
@@ -182,13 +171,14 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
         </RightContent>
     </VaContent>
    ))   
+ 
    :
-    AnimeDetail.characters.slice(0, 10).map((content, index)=>(
+    AnimeDetail.slice(0, 10).map((content, index)=>(
     <VaContent >
         <RightContent reverse={false} FullWidth={false}>
-          <ImgHolder src = {content.image_url} alt=""/>
+          <ImgHolder src = {content.character.images.jpg.image_url} alt=""/>
           <DetailContent FlexEnd = {false} > 
-           <ContentP>{content.name}</ContentP> 
+           <ContentP>{content.character.name}</ContentP> 
            <ContentP>{content.role}</ContentP>  
           </DetailContent >
         </RightContent>
@@ -196,9 +186,9 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
 
     {content.voice_actors.filter(result => result.language === 'Japanese').slice(0,1).map(newArr => (
     <RightContent reverse={true}>   
-        <ImgHolder src = {newArr.image_url} alt=""/>
+        <ImgHolder src = {newArr.person.images.jpg.image_url} alt=""/>
         <DetailContent FlexEnd = {true}> 
-            <ContentP>{newArr.name}</ContentP> 
+            <ContentP>{newArr.person.name}</ContentP> 
             <ContentP>{newArr.language}</ContentP>  
         </DetailContent >
     </RightContent>  
@@ -208,18 +198,20 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
 
    ))
    :
-   AnimeDetail.characters.slice(0, 10).map((content, index)=>(
+   AnimeDetail.slice(0, 10).map((content, index)=>(
     <VaContent >
         <RightContent reverse={false} FullWidth={true}>
-          <ImgHolder src = {content.image_url} alt=""/>
+          <ImgHolder src = {content.character.images.jpg.image_url} alt=""/>
           <DetailContent FlexEnd = {false} > 
-           <ContentP>{content.name}</ContentP> 
+           <ContentP>{content.character.name}</ContentP> 
            <ContentP>{content.role}</ContentP>  
           </DetailContent >
         </RightContent>
 
   </VaContent>
-   ))}
+   ))
+  
+   }
 
 
     {IsAnime?
@@ -230,9 +222,9 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
          
       <VaContentMobile Show={true}>     
               <RightContent reverse={false} FullWidth={true} >
-                <ImgHolder src = {StaffArray[CounterStaff].image_url} alt=""/>
+                <ImgHolder src = {StaffArray[CounterStaff].person.images.jpg.image_url} alt=""/>
                 <DetailContent FlexEnd = {false} > 
-                <ContentP>{StaffArray[CounterStaff].name}</ContentP>
+                <ContentP>{StaffArray[CounterStaff].person.name}</ContentP>
                   <ContentArrayP> 
                   {StaffArray[CounterStaff].positions.map((content,index,arr)=>
                      arr.length - 1 === index?
@@ -254,19 +246,19 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
       <VaContentMobile Show={true}>    
             
               <RightContent reverse={false} FullWidth={true} >
-                <ImgHolder src = {CharArray[CounterChar].image_url} alt=""/>
+                <ImgHolder src = {AnimeDetail[CounterChar].character.images.jpg.image_url} alt=""/>
                 <DetailContent FlexEnd = {false} > 
-                 <ContentP>{CharArray[CounterChar].name}</ContentP> 
-                 <ContentP>{CharArray[CounterChar].role}</ContentP>  
+                 <ContentP>{AnimeDetail[CounterChar].character.name}</ContentP> 
+                 <ContentP>{AnimeDetail[CounterChar].role}</ContentP>  
                 </DetailContent >
               </RightContent>
          
          
-            {CharArray[CounterChar].voice_actors.filter(result => result.language === 'Japanese').slice(0,1).map(newArr => (
+            {AnimeDetail[CounterChar].voice_actors.filter(result => result.language === 'Japanese').slice(0,1).map(newArr => (
               <RightContent reverse={true} FullWidth={true}>   
-                  <ImgHolder src = {newArr.image_url} alt=""/>
+                  <ImgHolder src = {newArr.person.images.jpg.image_url} alt=""/>
                   <DetailContent FlexEnd = {true}> 
-                      <ContentP>{newArr.name}</ContentP> 
+                      <ContentP>{newArr.person.name}</ContentP> 
                       <ContentP>{newArr.language}</ContentP>  
                   </DetailContent >
               </RightContent>  
@@ -284,10 +276,10 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
        
     <VaContentMobile Show={true}>     
             <RightContent reverse={false} FullWidth={true} >
-              <ImgHolder src = {CharArray[CounterChar].image_url} alt=""/>
+              <ImgHolder src = {AnimeDetail[CounterChar].character.images.jpg.image_url} alt=""/>
               <DetailContent FlexEnd = {false} > 
-                <ContentP>{CharArray[CounterChar].name}</ContentP>
-                <ContentP>{CharArray[CounterChar].role}</ContentP>  
+                <ContentP>{AnimeDetail[CounterChar].character.name}</ContentP>
+                <ContentP>{AnimeDetail[CounterChar].role}</ContentP>  
               </DetailContent >
             </RightContent>
     </VaContentMobile>

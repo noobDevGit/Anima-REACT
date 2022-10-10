@@ -47,16 +47,16 @@ import { Container,
 
         if (IsAnime) {
 
-        const result = await axios (`https://api.jikan.moe/v3/anime/${AnimeId}`)
+        const result = await axios (`https://api.jikan.moe/v4/anime/${AnimeId}/full`)
         
-        setAnimeDetail(result.data)
+        setAnimeDetail(result.data.data)
         setIsloading(false)
             
         }else{
 
-            const result = await axios (`https://api.jikan.moe/v3/manga/${AnimeId}`)
-        
-            setAnimeDetail(result.data)
+            const result = await axios (`https://api.jikan.moe/v4/manga/${AnimeId}/full`)
+            
+            setAnimeDetail(result.data.data)
             setIsloading(false)
             
         }
@@ -202,7 +202,7 @@ import { Container,
 
 
 
-            {Object.entries(AnimeDetail.related).length === 0?
+            {Object.entries(AnimeDetail.relations).length === 0?
                           <></>
                            :
                            <>
@@ -216,114 +216,107 @@ import { Container,
                                 </EditP>
                             </ContentTitleContainer>
 
-                            {AnimeDetail.related.hasOwnProperty('Adaptation')?
-                            <RelatedAnimeContent>
-                                Adaptation:   
-                                {AnimeDetail.related.Adaptation.map((content,index,arr)=>(
 
-                                arr.length - 1 === index?
-                                <> {content.name}</>
-                                :
-                                <> {content.name}, </>
-                                 ))}
-                            </RelatedAnimeContent>
-                            :<></>
+                            {AnimeDetail.relations.map((content,index,arr)=>
+                              
+                              {
+                               let returnRow;
+
+                                switch (content.relation) {
+                                    case 'Adaptation':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Adaptation:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                        break;
+                                    case 'Alternative setting':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Alternative setting:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                        break;
+                                    case 'Sequel':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Sequel:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                        break;
+                                    case 'Other':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Other:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                        break;
+                                    case 'Alternative version':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Alternative version:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                        break;
+                                    case 'Side story':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Side story:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                        break;
+                                    case 'Spin-off':
+                                    returnRow =  <RelatedAnimeContent>
+                                                    Spin-off:   
+                                                    {content.entry.map((content,index,arr)=>(
+                
+                                                    arr.length - 1 === index?
+                                                    <> {content.name}</>
+                                                    :
+                                                    <> {content.name}, </>
+                                                    ))}
+                                                </RelatedAnimeContent>
+                                            break;
+                                    default:
+                                        <></>
+                                        break;
                                 }
 
+                                return returnRow
 
-                            {AnimeDetail.related.hasOwnProperty('Alternative setting')?
-                                <RelatedAnimeContent>
-                                    Alternative setting: 
-                                        {AnimeDetail.related['Alternative setting'].map((content,index,arr)=>(
- 
-                                         arr.length - 1 === index?
-                                        <> {content.name}</>
-                                         :
-                                        <> {content.name}, </>
-                                        ))}
-                                </RelatedAnimeContent>
-                                    :
-                                    <></>
-                             }        
-
-
-                        {AnimeDetail.related.hasOwnProperty('Sequel')?
-                            <RelatedAnimeContent>
-                                Sequel:
-                                {AnimeDetail.related.Sequel.map((content,index,arr)=>(
-
-                                arr.length - 1 === index?
-                                <> {content.name}</>
-                                :
-                                <> {content.name}, </>
-                                ))} 
-                            </RelatedAnimeContent>
-                            :
-                            <></>
                             }
-
-                        {AnimeDetail.related.hasOwnProperty('Other')?
-                            <RelatedAnimeContent>
-                                Other:
-                                {AnimeDetail.related.Other.map((content,index,arr)=>(
-
-                                arr.length - 1 === index?
-                                <> {content.name}</>
-                                :
-                                <> {content.name}, </>
-                                ))} 
-                            </RelatedAnimeContent>
-                            :
-                            <></>
-                            }
-
-                            {AnimeDetail.related.hasOwnProperty('Alternative version')?
-                            <RelatedAnimeContent>
-                                Alternative version:
-                                {AnimeDetail.related['Alternative version'].map((content,index,arr)=>(
-
-                                arr.length - 1 === index?
-                                <> {content.name}</>
-                                :
-                                <> {content.name}, </>
-                                ))} 
-                            </RelatedAnimeContent>
-                            :
-                            <></>
-                            }
-
-
-                            {AnimeDetail.related.hasOwnProperty('Side story')?
-                            <RelatedAnimeContent>
-                                Side story:
-                                {AnimeDetail.related['Side story'].map((content,index,arr)=>(
-
-                                arr.length - 1 === index?
-                                <> {content.name}</>
-                                :
-                                <> {content.name}, </>
-                                ))} 
-                            </RelatedAnimeContent>
-                            :
-                            <></>
-                            } 
-
-
-                            {AnimeDetail.related.hasOwnProperty('Spin-off')?
-                            <RelatedAnimeContent>
-                                Spin-Off:
-                                {AnimeDetail.related['Spin-off'].map((content,index,arr)=>(
-
-                                arr.length - 1 === index?
-                                <> {content.name}</>
-                                :
-                                <> {content.name}, </>
-                                ))} 
-                            </RelatedAnimeContent>
-                            :
-                            <></>
-                            }         
-                              
+                                    
+                            )}
                             
                             </>}
                             
@@ -368,7 +361,7 @@ import { Container,
                         Opening Theme
                      </ThemeContent>
 
-                     {AnimeDetail.opening_themes.map((content)=>(
+                     {AnimeDetail.theme.openings.map((content)=>(
                         <ThemeContent isTitle = {false} Height = {'40px'}>
                          <PlayIcon /> {content}
                         </ThemeContent>
@@ -379,7 +372,7 @@ import { Container,
                     <ThemeContent isTitle = {true} Height = {'30px'}>
                     Ending Theme
                     </ThemeContent>
-                    {AnimeDetail.ending_themes.map((content)=>(
+                    {AnimeDetail.theme.endings.map((content)=>(
                         <ThemeContent isTitle = {false} Height = {'40px'}>
                          <PlayIcon /> {content}
                         </ThemeContent>

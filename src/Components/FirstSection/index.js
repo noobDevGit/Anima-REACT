@@ -44,21 +44,26 @@ return Loading ? <h1>Loading....</h1>:
             <FeaturedAnimeSection>
 
                 <ImageContainer>
-                    <AnimePoster src = {FeaturedAnime.image_url} alt="" />
+                    <AnimePoster src = {FeaturedAnime.data.images.jpg.image_url} alt="" />
                 </ImageContainer>
                 
                 <DetailContainer>
-                    <AnimeTitle textColor ={isLightBg?"#000":"#20AFA1"}>{FeaturedAnime.title}</AnimeTitle>
+                    <AnimeTitle textColor ={isLightBg?"#000":"#20AFA1"}>{FeaturedAnime.data.titles.map((task,index,arr)=>
+                      index == 0?  
+                        task.title
+                        :
+                        <></>
+                    )}</AnimeTitle>
 
                     {isAnime?
-                    <AnimeYear textColor ={isLightBg?"#000":"#20AFA1"}>Premiered : {FeaturedAnime.premiered} </AnimeYear>
+                    <AnimeYear textColor ={isLightBg?"#000":"#20AFA1"}>Premiered : {FeaturedAnime.data.season} {FeaturedAnime.data.year} </AnimeYear>
                     :
-                    <AnimeYear textColor ={isLightBg?"#000":"#20AFA1"}>Published : {FeaturedAnime.published.string} </AnimeYear>}
+                    <AnimeYear textColor ={isLightBg?"#000":"#20AFA1"}>Published : {FeaturedAnime.data.published.string} </AnimeYear>}
                     
                     {isAnime?
-                    <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}>{FeaturedAnime.duration} | 
+                    <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}>{FeaturedAnime.data.duration} | 
 
-                     {FeaturedAnime.genres.map((task,index,arr)=>(
+                     {FeaturedAnime.data.genres.map((task,index,arr)=>(
 
                     arr.length - 1 === index?
                     <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}> {task.name} </DurationNGenre>
@@ -68,29 +73,31 @@ return Loading ? <h1>Loading....</h1>:
                     } </DurationNGenre>
                     
                     :
-                    <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}>Volumes: {FeaturedAnime.volumes} | 
-                      {FeaturedAnime.genres.map((task,index,arr)=>(
+                    <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}>Volumes: {FeaturedAnime.data.volumes} | 
+                      {FeaturedAnime.data.genres.map((task,index,arr)=>(
 
                         arr.length - 1 === index?
                         <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}> {task.name} </DurationNGenre>
                         :
                         <DurationNGenre textColor ={isLightBg?"#000":"#20AFA1"}> {task.name}, </DurationNGenre>
                         ))
-                        }</DurationNGenre> }
+                        }
+                        
+                        </DurationNGenre> }
 
                     
                     <StarnRating>
                         <StarIcon/>
-                        <AnimeScore textColor ={isLightBg?"#000":"#20AFA1"}>{FeaturedAnime.score} </AnimeScore>
+                        <AnimeScore textColor ={isLightBg?"#000":"#20AFA1"}>{FeaturedAnime.data.score} </AnimeScore>
                     </StarnRating>
 
                    
-                    <Synopsis textColor ={isLightBg?"#000":"#20AFA1"}> {FeaturedAnime.synopsis} </Synopsis>
+                    <Synopsis textColor ={isLightBg?"#000":"#20AFA1"}> {FeaturedAnime.data.synopsis} </Synopsis>
         
                     
                     <BtnDetailContainer>
                         <BtnDetail isLightBg = {isLightBg}>
-                            <Link to={isAnime?`DetailPage/Anime/${FeaturedAnime.mal_id}`:`DetailPage/Manga/${FeaturedAnime.mal_id}`}>View Detail</Link></BtnDetail>
+                            <Link to={isAnime?`DetailPage/Anime/${FeaturedAnime.data.mal_id}`:`DetailPage/Manga/${FeaturedAnime.data.mal_id}`}>View Detail</Link></BtnDetail>
                     </BtnDetailContainer>
 
                 </DetailContainer>
