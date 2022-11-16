@@ -89,13 +89,13 @@ const handleClick = (event) => {
 
          setIsType('anime')   
 
-        const result = await axios (`https://api.jikan.moe/v3/genre/anime/${params.id}/${params.page}`)
-
-        const pageCount = Math.ceil(parseInt(result.data.item_count) / 100)
+        const result = await axios (`https://api.jikan.moe/v4/anime?genres=${params.id}&page=${params.page}`)
+                                    
+        const pageCount = Math.ceil(parseInt(result.data.pagination.items.total) / 100)
 
         setPageCount(pageCount)
         
-        setAnimeDetail(result.data)
+        setAnimeDetail(result.data.data)
         setIsloading(false)
         window.scrollTo(0, 0)
             
@@ -103,17 +103,15 @@ const handleClick = (event) => {
 
         setIsType('manga')    
 
-        const result = await axios (`https://api.jikan.moe/v3/genre/manga/${params.id}/${params.page}`)
-
-        const pageCount = Math.ceil(parseInt(result.data.item_count) / 100)
+        const result = await axios (`https://api.jikan.moe/v4/manga?genres=${params.id}&page=${params.page}`)
+        
+        const pageCount = Math.ceil(parseInt(result.data.pagination.items.total) / 100)
 
         setPageCount(pageCount)
         
-        setAnimeDetail(result.data)
+        setAnimeDetail(result.data.data)
         setIsloading(false)
         window.scrollTo(0, 0)
-
-        
 
 
 
@@ -143,7 +141,7 @@ const handleClick = (event) => {
             <GenreDiv>
             {params.genre.replace('_',' ')} {params.type}
             </GenreDiv>
-            {AnimeDetail[isType].map((content)=>(
+            {AnimeDetail.map((content)=>(
                 <AnimeListCardContainer>
                     <AnimeListTitleDiv>
                         <AnimeListParagraph Title={true} Size={'16px'}>
@@ -216,11 +214,11 @@ const handleClick = (event) => {
                         <AnimeListImage>
                             {params.type === 'Anime'?
                             <NavLink to={`/DetailPage/Anime/${content.mal_id}`}>
-                            <AnimeListPoster src={content.image_url}/>  
+                            <AnimeListPoster src={content.images.jpg.image_url}/>  
                             </NavLink>  
                             :
                             <NavLink to={`/DetailPage/Manga/${content.mal_id}`}>
-                            <AnimeListPoster src={content.image_url}/>  
+                            <AnimeListPoster src={content.images.jpg.image_url}/>  
                             </NavLink>  
                             }
                                

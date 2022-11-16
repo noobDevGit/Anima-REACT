@@ -22,7 +22,7 @@ import logo  from "../../logo/logo.png"
 
 import axios from 'axios'
 
-import { useState,useEffect,useRef } from 'react';
+import { useState,useRef, useEffect } from 'react';
 
 
 
@@ -43,6 +43,36 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
 
     const [searchQuery,setSearchQuery]=useState('');
 
+
+
+//Filled featuredAnime array with data from API
+useEffect(()=>{
+
+   
+
+      setTimeout(function(){ 
+
+            
+        const fetch = async ()=>{
+                
+            const result = await axios (`https://api.jikan.moe/v4/anime?q=${MobileQuery}&page=1&limit=5`)
+    
+            const Mangaresult = await axios (`https://api.jikan.moe/v4/manga?q=${MobileQuery}&page=1&limit=5`)
+      
+            setAnimeDetail(result.data.data)
+    
+            setMangaDetail(Mangaresult.data.data)
+    
+            setIsloading(false)
+      
+          }
+
+          fetch()
+   
+}
+   , 2000);
+  },[MobileQuery])
+
     const Test =(value)=>{
 
         if (value.length > 0 && value.length < 3) {
@@ -56,172 +86,214 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
 
             SetInputLength(value.length)
             let newstuff = encodeURI(value)
-            setSearchQuery(newstuff)
+         
+
+
+
+
+            setTimeout(function(){ 
+
+                setSearchQuery(newstuff)
+                
+               }, 1000);
+
+
+
+
+           
+
+
+              setTimeout(function(){ 
+
+            
+                    const fetch = async ()=>{
+        
+                        const result = await axios (`https://api.jikan.moe/v4/anime?q=${searchQuery}&page=1&limit=5`)
+          
+                        const Mangaresult = await axios (`https://api.jikan.moe/v4/manga?q=${searchQuery}&page=1&limit=5`)
+                  
+                        setAnimeDetail(result.data.data)
+          
+                        setMangaDetail(Mangaresult.data.data)
+          
+                        setIsloading(false)
+                    }
+                  
+                      
+                  
+                      fetch()
+        
+                    
+                
+
+               
+            }
+               , 1000);
             
 
         } 
     }
 
 
-        useEffect(()=>{
+        // useEffect(()=>{
 
-            const fetch = async ()=>{
+        //     const fetch = async ()=>{
         
-              const result = await axios (`https://api.jikan.moe/v3/search/anime?q=${searchQuery}&page=1&limit=5`)
+        //       const result = await axios (`https://api.jikan.moe/v4/anime?q=${searchQuery}&page=1&limit=5`)
 
-              const Mangaresult = await axios (`https://api.jikan.moe/v3/search/manga?q=${searchQuery}&page=1&limit=5`)
+        //       const Mangaresult = await axios (`https://api.jikan.moe/v4/manga?q=${searchQuery}&page=1&limit=5`)
         
-              setAnimeDetail(result.data)
+        //       setAnimeDetail(result.data.data)
 
-              setMangaDetail(Mangaresult.data)
+        //       setMangaDetail(Mangaresult.data.data)
 
-              setIsloading(false)
+        //       setIsloading(false)
         
-            }
+        //     }
         
-            fetch()
+        //     fetch()
         
         
-          },[searchQuery])
+        //   },[searchQuery])
 
-          useEffect(()=>{
+        //   useEffect(()=>{
 
-            if (MobileQuery.length >= 3) {
+        //     if (MobileQuery.length >= 3) {
 
-                const fetch = async ()=>{
+        //         const fetch = async ()=>{
         
-                    const result = await axios (`https://api.jikan.moe/v3/search/anime?q=${MobileQuery}&page=1&limit=5`)
+        //             const result = await axios (`https://api.jikan.moe/v4/anime?q=${MobileQuery}&page=1&limit=5`)
 
-                    const Mangaresult = await axios (`https://api.jikan.moe/v3/search/manga?q=${MobileQuery}&page=1&limit=5`)
+        //             const Mangaresult = await axios (`https://api.jikan.moe/v4/manga?q=${MobileQuery}&page=1&limit=5`)
               
-                    setAnimeDetail(result.data)
+        //             setAnimeDetail(result.data.data)
 
-                    setMangaDetail(Mangaresult.data)
+        //             setMangaDetail(Mangaresult.data.data)
       
-                    setIsloading(false)
+        //             setIsloading(false)
               
-                  }
+        //           }
               
-                  fetch()
+        //           fetch()
                 
-            }
+        //     }
 
          
         
         
-          },[MobileQuery])
+        //   },[MobileQuery])
 
 
      
 
 
-      const FormatDate = (DatePar) =>{
+    //   const FormatDate = (DatePar) =>{
 
-        const year = parseInt(DatePar.substring(0,4))
+    //     const year = parseInt(DatePar.substring(0,4))
 
-        const month = parseInt(DatePar.substring(5,7))
+    //     const month = parseInt(DatePar.substring(5,7))
 
-        const day = parseInt(DatePar.substring(8,10))
+    //     const day = parseInt(DatePar.substring(8,10))
 
-        let formatMonth='';
+    //     let formatMonth='';
 
-        switch (month) {
-            case 1:
-              formatMonth = "Jan";
-              break;
-            case 2:
-              formatMonth = "Feb";
-              break;
-            case 3:
-              formatMonth = "Mar";
-              break;
-            case 4:
-              formatMonth = "Apr";
-              break;
-            case 5:
-                formatMonth = "May";
-                break;
-            case 6:
-                formatMonth = "jun";
-                break;  
-            case 7:
-                formatMonth = "Jul";
-                break;
-            case 8:
-                formatMonth = "Aug";
-                break;
-            case 9:
-                formatMonth = "Sep";
-                break;
-            case 10:
-                formatMonth = "Oct";
-                break;
-            case 11:
-                formatMonth = "Nov";
-                break;
-            case 12:
-                formatMonth = "Dec";
-                break;
-          }
-
-
-        return (day +' '+formatMonth+', '+year)
+    //     switch (month) {
+    //         case 1:
+    //           formatMonth = "Jan";
+    //           break;
+    //         case 2:
+    //           formatMonth = "Feb";
+    //           break;
+    //         case 3:
+    //           formatMonth = "Mar";
+    //           break;
+    //         case 4:
+    //           formatMonth = "Apr";
+    //           break;
+    //         case 5:
+    //             formatMonth = "May";
+    //             break;
+    //         case 6:
+    //             formatMonth = "jun";
+    //             break;  
+    //         case 7:
+    //             formatMonth = "Jul";
+    //             break;
+    //         case 8:
+    //             formatMonth = "Aug";
+    //             break;
+    //         case 9:
+    //             formatMonth = "Sep";
+    //             break;
+    //         case 10:
+    //             formatMonth = "Oct";
+    //             break;
+    //         case 11:
+    //             formatMonth = "Nov";
+    //             break;
+    //         case 12:
+    //             formatMonth = "Dec";
+    //             break;
+    //       }
 
 
-      }
+    //     return (day +' '+formatMonth+', '+year)
+
+
+    //   }
 
 
 
-      const ProccessDate = (rawDateFrom, rawDateTo) =>{
+    //   const ProccessDate = (rawDateFrom, rawDateTo) =>{
 
-        if (rawDateFrom !== null && rawDateTo !== null) {
+    //     if (rawDateFrom !== null && rawDateTo !== null) {
             
-                return (FormatDate(rawDateFrom)+' to '+FormatDate(rawDateTo))
+    //             return (FormatDate(rawDateFrom)+' to '+FormatDate(rawDateTo))
 
-        }else if (rawDateFrom !== null && rawDateTo === null) {
+    //     }else if (rawDateFrom !== null && rawDateTo === null) {
             
-                return (FormatDate(rawDateFrom)+' to ?')
-        }else{
+    //             return (FormatDate(rawDateFrom)+' to ?')
+    //     }else{
 
 
-                return ('Not available')
-        }
+    //             return ('Not available')
+    //     }
       
 
-      }
+    //   }
 
 
-      const ProccessStatus=(FromDate,toDate)=>{
-        var today = new Date();
+    //   const ProccessStatus=(FromDate,toDate)=>{
+    //     var today = new Date();
 
-        if (FromDate !== null && toDate ===null) {
+    //     if (FromDate !== null && toDate ===null) {
 
-            var Fromdate = new Date(FromDate);
+    //         var Fromdate = new Date(FromDate);
 
-            if (Fromdate <= today) {
+    //         if (Fromdate <= today) {
 
-                return 'Currently Airing'
+    //             return 'Currently Airing'
                 
-            }else{
+    //         }else{
 
-                return 'Not yet Aired'
-            }
+    //             return 'Not yet Aired'
+    //         }
             
-        }else if(FromDate !== null && toDate !==null){
+    //     }else if(FromDate !== null && toDate !==null){
 
-            return 'Finished Airing'
+    //         return 'Finished Airing'
 
-        }else{
+    //     }else{
 
-            return 'Not yet Aired'
+    //         return 'Not yet Aired'
 
-        }
+    //     }
         
 
        
 
 
-      }
+    //   }
 
       const test = ()=>{
         ToggleFunc(true)
@@ -247,7 +319,7 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
                 onClick={DefaultValue}>    
             <SearchDetailCard>
                     <ImgContainer>
-                        <ImgHolder src = {content.image_url} alt=""/>
+                        <ImgHolder src = {content.images.jpg.image_url} alt=""/>
                     </ImgContainer>
 
                 <SearchCardLeftDetail>
@@ -260,11 +332,11 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
 
                         {type === 'Anime' ?
                         <TextWrapperDiv>
-                            <MainText isTitle={false}>Aired :{ProccessDate(content.start_date,content.end_date) } </MainText>
+                            <MainText isTitle={false}>Aired :{(content.aired.string) } </MainText>
                         </TextWrapperDiv>
                             :
                         <TextWrapperDiv>
-                            <MainText isTitle={false}>Published :{ProccessDate(content.start_date,content.end_date) } </MainText>
+                            <MainText isTitle={false}>Published :{(content.start_date) } </MainText>
                         </TextWrapperDiv>
                     
                         }
@@ -275,7 +347,7 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
                         </TextWrapperDiv>
 
                         <TextWrapperDiv>
-                            <MainText isTitle={false}>Status : {ProccessStatus(content.start_date,content.end_date)}</MainText>
+                            <MainText isTitle={false}>Status : {(content.status)}</MainText>
                         </TextWrapperDiv>
                 </SearchCardLeftDetail>
             </SearchDetailCard>
@@ -299,7 +371,8 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
                     <TypeP>Anime</TypeP>
                     {isLoading?<h1>Loading...</h1>:
                    
-                    AnimeDetail.results.map((content)=>(
+
+                    AnimeDetail.map((content)=>(
 
                         SearchCard('Anime',content)
 
@@ -309,7 +382,7 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
                     <TypeP>Manga</TypeP>
                     {isLoading?<h1>Loading...</h1>:
                    
-                   MangaDetail.results.map((content)=>(
+                   MangaDetail.map((content)=>(
                          SearchCard('Manga',content)
                     ))
                 }
@@ -323,7 +396,7 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
                    <TypeP>Anime</TypeP>
                     {isLoading?<h1>Loading...</h1>:
                    
-                    AnimeDetail.results.map((content)=>(
+                    AnimeDetail.map((content)=>(
 
                         SearchCard('Anime',content)
 
@@ -333,7 +406,7 @@ export const Header = ({ToggleFunc,ToggleSearchBar,SendSearchIsOpen,MobileQuery}
                     <TypeP>Manga</TypeP>
                     {isLoading?<h1>Loading...</h1>:
                    
-                   MangaDetail.results.map((content)=>(
+                   MangaDetail.map((content)=>(
                          SearchCard('Manga',content)
                     ))
                 }

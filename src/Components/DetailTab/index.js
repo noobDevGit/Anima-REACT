@@ -47,17 +47,43 @@ import { Container,
 
         if (IsAnime) {
 
-        const result = await axios (`https://api.jikan.moe/v4/anime/${AnimeId}/full`)
-        
-        setAnimeDetail(result.data.data)
-        setIsloading(false)
+            setTimeout(function(){ 
+
+
+                axios
+                .get(`https://api.jikan.moe/v4/anime/${AnimeId}/full`)
+                .then((resp)=>{
+                 
+                  setAnimeDetail(resp.data.data)
+                  setIsloading(false)
+                })
+                .catch((err)=>{
+
+                })
+               }, 1000);
+
+       
             
         }else{
 
-            const result = await axios (`https://api.jikan.moe/v4/manga/${AnimeId}/full`)
+            // const result = await axios (`https://api.jikan.moe/v4/manga/${AnimeId}/full`)
             
-            setAnimeDetail(result.data.data)
-            setIsloading(false)
+            
+            // setAnimeDetail(result.data.data)
+            // setIsloading(false)
+
+            setTimeout(function(){ 
+            axios
+            .get(`https://api.jikan.moe/v4/manga/${AnimeId}/full`)
+            .then((resp)=>{
+             
+              setAnimeDetail(resp.data.data)
+              setIsloading(false)
+            })
+            .catch((err)=>{
+
+            })
+           }, 1000);
             
         }
         
@@ -69,7 +95,7 @@ import { Container,
     getData()
 
 
-  },[AnimeId])
+  },[])
 
 
  

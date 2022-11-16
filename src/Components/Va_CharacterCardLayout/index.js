@@ -35,7 +35,8 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
        //Character counter
     const [CounterStaff, setCounterStaff] = useState(0)
   
-  
+  //Rerun useeffect
+  const [errorFetchedChecker, setErrorFetchedChecker] = useState(false);
 
   
     //Filled featuredAnime array with data from API
@@ -45,15 +46,48 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
   
         if (IsAnime) {
 
-          const result = await axios (`https://api.jikan.moe/v4/anime/${IDAnim}/characters`)
-          const StaffResult = await axios (`https://api.jikan.moe/v4/anime/${IDAnim}/staff`)
           
-          setAnimeDetail(result.data.data)
-          
-          setStaffArray(StaffResult.data.data)
+
+          setTimeout(function(){ 
+            
+          axios.get(`https://api.jikan.moe/v4/anime/${IDAnim}/characters`)
+                .then((resp)=>{
+                        setAnimeDetail(resp.data.data)
+                     
+                        setTimeout(function(){ 
   
-          setIsloading(false);
-       
+                          axios.get(`https://api.jikan.moe/v4/anime/${IDAnim}/staff`)
+                          .then((resp)=>{
+                                  setStaffArray(resp.data.data)
+                                
+                                  setIsloading(false)
+                                })
+  
+                        }, 2000);
+                        
+                      })
+
+           }, 2000);
+
+          
+
+           
+           
+            // axios
+            //     .get(`https://api.jikan.moe/v4/anime/${IDAnim}/characters`)
+            //     .then((resp)=>{
+            //       setAnimeDetail(resp.data.data)
+            //       const StaffResult = axios (`https://api.jikan.moe/v4/anime/${IDAnim}/staff`)
+          
+            //       setStaffArray(StaffResult.data.data)
+            //       setIsloading(false)
+
+            //     })
+            //     .catch((err)=>{
+
+            //     })
+            
+
           
         }else{
 
@@ -77,7 +111,7 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
       getData()
   
   
-    },[IDAnim])
+    },[])
 
 
     
@@ -171,6 +205,7 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
         </RightContent>
     </VaContent>
    ))   
+  
  
    :
     AnimeDetail.slice(0, 10).map((content, index)=>(
@@ -238,6 +273,7 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
       </VaContentMobile>
     
     </VaContentMobileContainer>
+   
       :
     <VaContentMobileContainer>
       <ArrowNavleft onClick={() => NavFunction(true,false)}/>
@@ -268,7 +304,11 @@ const Va_Character_Staff = ({IDAnim, isStaff,IsAnime}) => {
     
     </VaContentMobileContainer>
     
-    
+   
+    :
+    AnimeDetail.length==0?
+
+    <>No characters data found</>
     :
     <VaContentMobileContainer>
       <ArrowNavleft onClick={() => NavFunction(true,false)}/>
